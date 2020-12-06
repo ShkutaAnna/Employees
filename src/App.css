@@ -1,0 +1,10 @@
+.App {
+  display: inline-block;
+}
+
+.listOfEmployees {
+  display: inline-block;
+  margin: 20pt;
+  min-width: 100pt;
+  vertical-align: text-top;
+}
