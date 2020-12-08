@@ -1,5 +1,7 @@
 .App {
   display: inline-block;
+  border-right: outset;
+  margin-right: 20pt;
 }
 
 .listOfEmployees {
@@ -7,4 +9,29 @@
   margin: 20pt;
   min-width: 100pt;
   vertical-align: text-top;
+}
+
+.LeftBlock{
+  float:left;
+  width: 60%;
+}
+
+.RightBlock{
+  float: right;
+  width: 40%;
+  padding-right: 10pt;
+}
+
+.BDaysBlock{
+  border-top: outset;
+}
+
+.Container{
+  display: inline-flex;
+}
+
+h2{
+  padding-left: 30pt;
+  padding-top: 20pt;
+  padding-bottom: 10pt;
 }

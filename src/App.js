@@ -1,52 +1,42 @@
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import ListOfEmployees from './Employee/ListOfEmployees';
-import API from "./utils/API";
+import ListofBDayEmployees from './BirthDayEmployee/ListOfBDayEmployees';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      employees: []
-    }
-  }
+export const Context = React.createContext();
 
-  render() {
-    
-    let letters = "";
-    for (let i = 65; i < 91; i++) {
-      letters += String.fromCharCode(i).toUpperCase();
-    }
-    letters = letters.split('');
+function App(){
+  const [employees, setEmployees] = useState([]);
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
+  const value = {employees, setEmployees, selectedEmployees, setSelectedEmployees};
 
-    return (
-      <div className="App">
-        { 
-          letters.map((letter, index) => {
-            let list = this.state.employees.filter((employee) => employee.lastName[0] === letter);
-            return (<ListOfEmployees 
-              key={index}
-              letter={letter}
-              list={list}
-            />);
-          })
-        }
+  useEffect(() => {
+    fetch(`https://yalantis-react-school-api.yalantis.com/api/task0/users`)
+    .then(response => response.json())
+    .then(json => {
+      json.forEach(element => {
+        element.isSelected = false
+      });
+      json.sort((a, b) => (a.lastName > b.lastName ? 1 : -1));  
+      setEmployees(json);
+    })
+  }, []);
+
+  return (
+    <Context.Provider value={value}>
+    <div className="Container">
+      <div className="LeftBlock">
+        <h2>Employees</h2>
+        <ListOfEmployees />
       </div>
-    );
-  }
-
-  async componentDidMount() {
-    // Load async data.
-    let employeesData = await API.get('/');
-    employeesData = employeesData.data;
-    employeesData.forEach(element => {
-      element.isSelected = false
-    });
-    employeesData.sort((a, b) => (a.lastName > b.lastName ? 1 : -1));
-    this.setState({
-      employees : employeesData
-    });
-  }
+      <div className="RightBlock">
+        <h2>Employees birthday</h2>
+        <ListofBDayEmployees />
+      </div>
+    </div>
+    </Context.Provider>
+  );
 }
+
 export default App;

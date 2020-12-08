@@ -1,28 +1,37 @@
+import React, {useState, useContext} from "react";
+import {Context} from "../App";
 
-import React from "react";
-import PropTypes from "prop-types";
+function Employee(props){
 
-class Employee extends React.Component {
-    render() {
-        const {firstName, lastName, isSelected} = this.props;
+    const value = useContext(Context);
 
-        return (
-            <div className="inline">
-                {lastName + ' ' + firstName}
-                <input type="checkbox" checked={isSelected} onChange={changeSelected}></input>
-            </div>
-        )
+    const [employee, setEmployee] = useState({
+        id: props.id,
+        firstName: props.firstName,
+        lastName: props.lastName,
+        isSelected: props.isSelected
+    });
+
+    function changeSelected(){
+        setEmployee(prev => {
+            return {
+                ...prev,
+                isSelected: !employee.isSelected
+            }
+        })
+        value.setEmployees(prev => {
+            prev.find(element => element.id === employee.id).isSelected = !prev.find(element => element.id === employee.id).isSelected;
+            return prev;
+        })
+        value.setSelectedEmployees(value.employees.filter((element) => element.isSelected));
     }
-}
 
-function changeSelected(){
-    //TODO
+    return (
+        <div className="inline">
+            {employee.lastName + ' ' + employee.firstName}
+            <input type="checkbox" checked={employee.isSelected} onChange={changeSelected}></input>
+        </div>
+    )
 }
-
-Employee.propTypes = {
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    isSelected: PropTypes.bool
-};
 
 export default Employee;
