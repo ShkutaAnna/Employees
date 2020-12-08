@@ -13,10 +13,10 @@ function ListOfEmployees() {
     }, value.selectedEmployees);
 
     return (
-            <div>
+            <div className="BDaysBlock">
             {
             ((value.employees.filter((element) => element.isSelected)).length > 0) ?
-            <div className="BDaysBlock">
+            <div>
             { 
                 mounths.map((mounth, index) => {
                   let list = value.employees.filter((element) => element.isSelected).filter((element) => new Date(element.dob).getMonth() === index);

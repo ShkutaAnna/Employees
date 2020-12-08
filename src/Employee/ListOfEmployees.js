@@ -12,7 +12,7 @@ function ListOfEmployees() {
                     letters.map((letter) => {
                         let list = value.employees.filter((employee) => employee.lastName[0] === letter);
                         return (
-                            <div className="listOfEmployees">
+                            <div className="ListOfEmployees">
                             <h3>{letter}</h3>
                             { 
                                 (list.length > 0) 

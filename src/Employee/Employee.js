@@ -21,6 +21,7 @@ function Employee(props){
         })
         value.setEmployees(prev => {
             prev.find(element => element.id === employee.id).isSelected = !prev.find(element => element.id === employee.id).isSelected;
+            window.sessionStorage.setItem('0', JSON.stringify(prev));
             return prev;
         })
         value.setSelectedEmployees(value.employees.filter((element) => element.isSelected));

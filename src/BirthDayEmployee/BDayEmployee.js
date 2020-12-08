@@ -18,7 +18,7 @@ function BDayEmployee(props){
 
     return (
         <div className="inline">
-            {employee.lastName + ' ' + employee.firstName + " - " + date.getDay() + " " + mounths[date.getMonth()] + ", " + date.getFullYear() + " year"}
+            {employee.lastName + ' ' + employee.firstName + " - " + date.getDate() + " " + mounths[date.getMonth()] + ", " + date.getFullYear() + " year"}
         </div>
     )
 }
