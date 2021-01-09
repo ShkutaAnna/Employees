@@ -1,28 +1,27 @@
 import React, {useContext} from "react";
 import Employee from './Employee';
-import {Context} from "../App";
 
-function ListOfEmployees() {
+function ListOfEmployees(props) {
     let letters = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ").split('');
-    const value = useContext(Context);
 
         return (
             <div className="App">
                 { 
                     letters.map((letter) => {
-                        let list = value.employees.filter((employee) => employee.lastName[0] === letter);
+                        let list = props.employees.filter((employee) => employee.lastName[0] === letter);
                         return (
                             <div className="ListOfEmployees">
                             <h3>{letter}</h3>
                             { 
                                 (list.length > 0) 
-                                ? list.map((employee) => {
+                                ? list.map((employee, index) => {
                                     return (<Employee
-                                        key={employee.id}
+                                        key={index}
                                         id={employee.id}
                                         firstName={employee.firstName}
                                         lastName={employee.lastName}
                                         isSelected={employee.isSelected}
+                                        changeSelected={props.changeSelected}
                                     />);
                                 }) : <span>____________</span>
                             }

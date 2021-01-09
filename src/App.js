@@ -1,48 +1,61 @@
 
-import React, {useState, useEffect} from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import ListOfEmployees from './Employee/ListOfEmployees';
 import ListofBDayEmployees from './BirthDayEmployee/ListOfBDayEmployees';
 
-export const Context = React.createContext();
+export default class App extends Component{
 
-
-
-function App(){
-  const [employees, setEmployees] = useState([]);
-  const [selectedEmployees, setSelectedEmployees] = useState([]);
-  const value = {employees, setEmployees, selectedEmployees, setSelectedEmployees};
-
-  useEffect(() => {
-    if(window.sessionStorage.getItem('0') !== null){
-      setEmployees(JSON.parse(window.sessionStorage.getItem('0')));
-    }else{
-      fetch(`https://yalantis-react-school-api.yalantis.com/api/task0/users`)
-    .then(response => response.json())
-    .then(json => {
-      json.forEach(element => {
-        element.isSelected = false
-      });
-      json.sort((a, b) => (a.lastName > b.lastName ? 1 : -1));  
-      setEmployees(json);
-    })
+  constructor(props){
+    super(props)
+    this.state = {
+      error: null,
+      isLoaded: false, 
+      employees: []
     }
-  }, []);
+  }
 
-  return (
-    <Context.Provider value={value}>
-    <div className="Container">
-      <div className="LeftBlock">
-        <h2>Employees</h2>
-        <ListOfEmployees />
-      </div>
-      <div className="RightBlock">
-        <h2>Employees birthday</h2>
-        <ListofBDayEmployees />
-      </div>
-    </div>
-    </Context.Provider>
-  );
+  componentDidMount() {
+    fetch("https://yalantis-react-school-api.yalantis.com/api/task0/users")
+    .then(res => res.json())
+    .then(
+      (result) => {
+        result.forEach(element => {
+          element.isSelected = false
+        })
+        this.setState({
+          isLoaded: true,
+          employees: result
+        })
+      }
+    )
+  }
+
+  changeSelectedEmployees = (id) => {
+    this.setState((prevState) => {
+      const employees = prevState.employees.map((o) => {
+        if(o.id === id)
+          o.isSelected = !o.isSelected
+        return o
+      })
+      return {
+        employees
+      }
+    })
+  }
+
+  render() {
+    return (
+        <div className="Container">
+          <div className="LeftBlock">
+            <h2>Employees</h2>
+            <ListOfEmployees employees={this.state.employees} changeSelected={this.changeSelectedEmployees}/>
+          </div>
+          <div className="RightBlock">
+            <h2>Employees birthday</h2>
+            <ListofBDayEmployees employees={this.state.employees}/>
+          </div>
+        </div>
+    )
+  } 
 }
-
-export default App;
